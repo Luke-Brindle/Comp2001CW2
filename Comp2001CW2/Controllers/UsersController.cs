@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Comp2001CW2.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace Comp2001CW2.Controllers
 {
@@ -97,6 +98,81 @@ namespace Comp2001CW2.Controllers
                 _dbContext.UnarchiveAccount(userID);
                 _dbContext.SaveChanges();
                 return Ok("Account unarchived successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("CreateAccount")]
+        public IActionResult CreateAccount([FromBody] string email, string password, string username, string dateofbirth, string languageid, bool unitpref, bool timepref)
+        {
+            try
+            {
+                _dbContext.CreateAccount(email, password, username, dateofbirth, languageid, unitpref, timepref) ;
+                _dbContext.SaveChanges();
+                return Ok("Account created successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("DeleteFavActivity")]
+        public IActionResult DeleteFavActivity([FromBody] int userID, int activityID)
+        {
+            try
+            {
+                _dbContext.DeleteFavActivity(userID, activityID);
+                _dbContext.SaveChanges();
+                return Ok("Activity removed from profile.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("NewFavActivity")]
+        public IActionResult NewFavActivity([FromBody] int userID, int activityID)
+        {
+            try
+            {
+                _dbContext.NewFavActivity(userID, activityID);
+                _dbContext.SaveChanges();
+                return Ok("Activity added to profile.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("EditAdminRights")]
+        public IActionResult EditAdminRights([FromBody] int userID, bool adminRights)
+        {
+            try
+            {
+                _dbContext.EditAdminRights(userID, adminRights);
+                _dbContext.SaveChanges();
+                return Ok("User admin rights set to " + adminRights );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("UpdateAccount")]
+        public IActionResult UpdateAccount([FromBody] int userID, string email, string password, string username, string dateofbirth, string languageid, int locationid, string aboutme, double height, double weight)
+        {
+            try
+            {
+                _dbContext.UpdateAccount(userID, email, password, username, dateofbirth, languageid, locationid, aboutme, height, weight);
+                _dbContext.SaveChanges();
+                return Ok("Account updated.");
             }
             catch (Exception ex)
             {

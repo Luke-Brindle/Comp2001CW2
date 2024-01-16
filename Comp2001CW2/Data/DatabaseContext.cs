@@ -49,6 +49,99 @@ namespace Comp2001CW2.Data
             command.ExecuteNonQuery();
         }
 
+        public void CreateAccount(string email, string password, string username, string dateofbirth, string languageid, bool unitpref, bool timepref)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[CreateAccount]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@Email", email);
+            command.Parameters.AddWithValue("@Password", password);
+            command.Parameters.AddWithValue("@UserName", username);
+            command.Parameters.AddWithValue("@DateOfBirth", dateofbirth);
+            command.Parameters.AddWithValue("@LanguageID", languageid);
+            command.Parameters.AddWithValue("@UnitPref", unitpref);
+            command.Parameters.AddWithValue("@TimePref", timepref);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteFavActivity(int userID, int activityID)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[DeleteFavActivity]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@UserID", userID);
+            command.Parameters.AddWithValue("@ActivityID", activityID);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void NewFavActivity(int userID, int activityID)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[NewFavActivity]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@UserID", userID);
+            command.Parameters.AddWithValue("@ActivityID", activityID);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void EditAdminRights(int userID, bool adminRights)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[EditAdminRights]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@UserID", userID);
+            command.Parameters.AddWithValue("@AdminRights", adminRights);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateAccount(int userID, string email, string password, string username, string dateofbirth, string languageid, int locationid, string aboutme, double height, double weight)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[UpdateAccount]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@UserID", userID);
+            command.Parameters.AddWithValue("@Email", email);
+            command.Parameters.AddWithValue("@Password", password);
+            command.Parameters.AddWithValue("@UserName", username);
+            command.Parameters.AddWithValue("@DateOfBirth", dateofbirth);
+            command.Parameters.AddWithValue("@LanguageID", languageid);
+            command.Parameters.AddWithValue("@LocationID", locationid);
+            command.Parameters.AddWithValue("@AboutMe", aboutme);
+            command.Parameters.AddWithValue("@Height", height);
+            command.Parameters.AddWithValue("@Weight", weight);
+
+            command.ExecuteNonQuery();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
