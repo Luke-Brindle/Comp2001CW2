@@ -25,9 +25,8 @@ public class AuthController : ControllerBase
 
         if (user != null)
         {
-            HttpContext.Items["UserID"] = user.UserID;
-            HttpContext.Items["Email"] = user.Email;
-            HttpContext.Items["AdminRights"] = user.AdminRights;
+            HttpContext.Session.SetInt32("UserID", user.UserID);
+            HttpContext.Session.SetInt32("AdminRights", user.AdminRights ? 1 : 0);
 
             return Ok("Login successful!");
         }

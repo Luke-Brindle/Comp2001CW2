@@ -20,6 +20,7 @@ namespace Comp2001CW2.Data
         public DbSet<ArchivedAccounts> ArchivedAccounts { get; set; }
         public DbSet<ActiveUsersFavouriteActivities> ActiveUsersFavouriteActivities { get; set; }
         public DbSet<RegionBreakdown> RegionBreakdown { get; set; }
+        public DbSet<LimitedView> LimitedView { get; set; }
 
         public void ArchiveAccount(int userID)
         {
@@ -142,6 +143,25 @@ namespace Comp2001CW2.Data
             command.ExecuteNonQuery();
         }
 
+        public void UpdatePreferences(int userID, bool unitPref, bool timePref)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[UpdatePreferences]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@UserID", userID);
+            command.Parameters.AddWithValue("@UnitPref", unitPref);
+            command.Parameters.AddWithValue("@TimePref", timePref);
+
+            command.ExecuteNonQuery();
+        }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -169,6 +189,12 @@ namespace Comp2001CW2.Data
             {
                 e.HasNoKey();
                 e.ToView("RegionBreakdown", "CW2");
+            });
+
+            modelBuilder.Entity<LimitedView>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("LimitedView", "CW2");
             });
         }
     }
