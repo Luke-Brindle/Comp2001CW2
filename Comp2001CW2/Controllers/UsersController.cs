@@ -70,5 +70,37 @@ namespace Comp2001CW2.Controllers
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
+
+            [HttpPost("ArchiveAccount")]
+            public IActionResult ArchiveAccount([FromBody] int userID)
+            {
+                try
+                {
+                    _dbContext.ArchiveAccount(userID);
+                    _dbContext.SaveChanges();
+                    return Ok("Account archived successfully.");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                } 
+            }
+
+
+        [HttpPost("UnarchiveAccount")]
+        public IActionResult UnarchiveAccount([FromBody] int userID)
+        {
+            try
+            {
+                _dbContext.UnarchiveAccount(userID);
+                _dbContext.SaveChanges();
+                return Ok("Account unarchived successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
     }
 }
