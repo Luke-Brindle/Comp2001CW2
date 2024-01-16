@@ -28,5 +28,47 @@ namespace Comp2001CW2.Controllers
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
+
+        [HttpGet("ArchivedAccounts")]
+        public IActionResult ArchivedAccounts()
+        {
+            try
+            {
+                var archivedUsers = _dbContext.ArchivedAccounts.ToList();
+                return Ok(archivedUsers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("ActiveUsersFavouriteActivities")]
+        public IActionResult ActiveUsersFavouriteActivities()
+        {
+            try
+            {
+                var usersActivities = _dbContext.ActiveUsersFavouriteActivities.ToList();
+                return Ok(usersActivities);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("RegionBreakdown")]
+        public IActionResult RegionBreakdown()
+        {
+            try
+            {
+                var usersRegions = _dbContext.RegionBreakdown.ToList();
+                return Ok(usersRegions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
     }
 }

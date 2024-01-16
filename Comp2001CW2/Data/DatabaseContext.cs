@@ -18,6 +18,9 @@ namespace Comp2001CW2.Data
         public DbSet<Location> Locations { get; set; }
 
         public DbSet<ActiveUsersView> ActiveUsersView { get; set; }
+        public DbSet<ArchivedAccounts> ArchivedAccounts { get; set; }
+        public DbSet<ActiveUsersFavouriteActivities> ActiveUsersFavouriteActivities { get; set; }
+        public DbSet<RegionBreakdown> RegionBreakdown { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,7 +30,25 @@ namespace Comp2001CW2.Data
             modelBuilder.Entity<ActiveUsersView>(e =>
             {
                 e.HasNoKey();
-                e.ToView("ActiveAccounts", "CW2"); // Adjust the schema and view name accordingly
+                e.ToView("ActiveAccounts", "CW2"); 
+            });
+
+            modelBuilder.Entity<ArchivedAccounts>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("ArchivedAccounts", "CW2"); 
+            });
+
+            modelBuilder.Entity<ActiveUsersFavouriteActivities>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("ActiveUsersFavouriteActivities", "CW2");
+            });
+
+            modelBuilder.Entity<RegionBreakdown>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("RegionBreakdown", "CW2");
             });
         }
 
