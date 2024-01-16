@@ -1,6 +1,7 @@
 ﻿using Comp2001CW2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Comp2001CW2.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Comp2001CW2.Controllers
 {
@@ -71,20 +72,21 @@ namespace Comp2001CW2.Controllers
             }
         }
 
-            [HttpPost("ArchiveAccount")]
-            public IActionResult ArchiveAccount([FromBody] int userID)
+        [HttpPost("ArchiveAccount")]
+        public IActionResult ArchiveAccount([FromBody] int userID)
+        {
+            try
             {
-                try
-                {
                     _dbContext.ArchiveAccount(userID);
                     _dbContext.SaveChanges();
                     return Ok("Account archived successfully.");
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
-                } 
+
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
 
 
         [HttpPost("UnarchiveAccount")]

@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 using Comp2001CW2.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -13,8 +11,7 @@ namespace Comp2001CW2.Data
         {
         }
 
-
-        public DbSet<User> Accounts { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -52,21 +49,21 @@ namespace Comp2001CW2.Data
             command.ExecuteNonQuery();
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<User>().ToTable("Accounts", "CW2");
             modelBuilder.Entity<ActiveUsersView>(e =>
             {
                 e.HasNoKey();
-                e.ToView("ActiveAccounts", "CW2"); 
+                e.ToView("ActiveAccounts", "CW2");
             });
 
             modelBuilder.Entity<ArchivedAccounts>(e =>
             {
                 e.HasNoKey();
-                e.ToView("ArchivedAccounts", "CW2"); 
+                e.ToView("ArchivedAccounts", "CW2");
             });
 
             modelBuilder.Entity<ActiveUsersFavouriteActivities>(e =>
@@ -81,6 +78,5 @@ namespace Comp2001CW2.Data
                 e.ToView("RegionBreakdown", "CW2");
             });
         }
-
     }
 }

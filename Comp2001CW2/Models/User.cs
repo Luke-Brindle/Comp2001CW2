@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Comp2001CW2.Models
 {
-    public class User
+    public class User 
     {
         [Key]
         public int UserID { get; set; }
@@ -18,8 +18,8 @@ namespace Comp2001CW2.Models
         [ForeignKey("LocationID")]
         public int LocationID { get; set; }
         public string AboutMe { get; set; }
-        public float Height { get; set; }
-        public float Weight { get; set; }
+        public double Height { get; set; }
+        public double Weight { get; set; }
         public bool UnitPref { get; set; }
         public bool TimePref { get; set; }
     }
