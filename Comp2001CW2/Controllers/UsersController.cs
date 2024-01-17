@@ -102,15 +102,23 @@ namespace Comp2001CW2.Controllers
         [HttpDelete("DeleteFavActivity")]
         public IActionResult DeleteFavActivity(int userID, int activityID)
         {
-            try
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userID != userId)
             {
-                _dbContext.DeleteFavActivity(userID, activityID);
-                _dbContext.SaveChanges();
-                return Ok("Activity removed from profile.");
+                return BadRequest("Only the logged in account can add new favourite activities to their profile");
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                try
+                {
+                    _dbContext.DeleteFavActivity(userID, activityID);
+                    _dbContext.SaveChanges();
+                    return Ok("Activity removed from profile.");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                }
             }
         }
 
