@@ -99,7 +99,7 @@ namespace Comp2001CW2.Controllers
             }
         }
 
-        [HttpPost("DeleteFavActivity")]
+        [HttpDelete("DeleteFavActivity")]
         public IActionResult DeleteFavActivity(int userID, int activityID)
         {
             try
@@ -117,20 +117,28 @@ namespace Comp2001CW2.Controllers
         [HttpPost("NewFavActivity")]
         public IActionResult NewFavActivity(int userID, int activityID)
         {
-            try
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userID != userId)
             {
-                _dbContext.NewFavActivity(userID, activityID);
-                _dbContext.SaveChanges();
-                return Ok("Activity added to profile.");
+                return BadRequest("Only the logged in account can add new favourite activities to their profile");
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                try
+                {
+                    _dbContext.NewFavActivity(userID, activityID);
+                    _dbContext.SaveChanges();
+                    return Ok("Activity added to profile.");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                }
             }
         }
 
 
-        [HttpPost("UpdateAccount")]
+        [HttpPut("UpdateAccount")]
         public IActionResult UpdateAccount(int userID, string email, string password, string username, string dateofbirth, string languageid, int locationid, string aboutme, double height, double weight)
         {
 
@@ -154,7 +162,7 @@ namespace Comp2001CW2.Controllers
             }
         }
 
-        [HttpPost("UpdatePreferences")]
+        [HttpPut("UpdatePreferences")]
         public IActionResult UpdatePreferences(int userID, bool unitPref, bool timePref)
         {
             int? userId = HttpContext.Session.GetInt32("UserID");
@@ -190,7 +198,7 @@ namespace Comp2001CW2.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost("ArchiveAccount")]
+        [HttpDelete("ArchiveAccount")]
         public IActionResult ArchiveAccount(int userID)
         {
             int? adminRights = HttpContext.Session.GetInt32("AdminRights");
@@ -215,7 +223,7 @@ namespace Comp2001CW2.Controllers
             }
         }
 
-        [HttpPost("EditAdminRights")]
+        [HttpPut("EditAdminRights")]
         public IActionResult EditAdminRights(int userID, bool adminRights)
         {
             int? loggedInAdminRights = HttpContext.Session.GetInt32("AdminRights");
