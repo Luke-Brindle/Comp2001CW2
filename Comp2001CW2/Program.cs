@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Comp2001CW2.Data;
-using Comp2001CW2.Models;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +11,8 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
     opt.UseSqlServer("Server=dist-6-505.uopnet.plymouth.ac.uk;Database=COMP2001_LBrindle;User ID=LBrindle;Password=ErkZ744+;TrustServerCertificate=True;");
 });
 
+builder.Services.AddDataProtection()
+        .SetApplicationName("YourApplicationName"); // Set a unique application name
 
 builder.Services.AddSession(options =>
 {
@@ -30,11 +29,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("./v1/swagger.json", "COMP2001 API");
+});
 
 app.UseHttpsRedirection();
 
