@@ -22,6 +22,10 @@ namespace Comp2001CW2.Data
         public DbSet<RegionBreakdown> RegionBreakdown { get; set; }
         public DbSet<LimitedView> LimitedView { get; set; }
 
+        public DbSet<LocationsView> LocationsView { get; set; }
+        public DbSet<LanguagesView> LanguagesView { get; set; }
+        public DbSet<ActivitiesView> ActivitiesView { get; set; }
+
         public void ArchiveAccount(int userID)
         {
             using var connection = new SqlConnection(Database.GetConnectionString());
@@ -160,6 +164,149 @@ namespace Comp2001CW2.Data
             command.ExecuteNonQuery();
         }
 
+        public void CreateActivity(string activityName)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[CreateActivity]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@ActivityName", activityName);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateActivity(int activityID, string activityName)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[UpdateActivity]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@ActivityID", activityID);
+            command.Parameters.AddWithValue("@ActivityName", activityName);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteActivity(int activityID)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[DeleteActivity]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@ActivityID", activityID);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void CreateLanguage(string languageID, string languageName)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[CreateLanguage]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            command.Parameters.AddWithValue("@LanguageID", languageID);
+            command.Parameters.AddWithValue("@LanguageName", languageName);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateLanguage(string languageID, string languageName)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[UpdateLanguage]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@LanguageID", languageID);
+            command.Parameters.AddWithValue("@LanguageName", languageName);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteLanguage(string languageID)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[DeleteLanguage]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@LanguageID", languageID);
+
+            command.ExecuteNonQuery();
+        }
+
+
+
+        public void CreateLocation(string town, string county, string country)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[CreateLocation]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            command.Parameters.AddWithValue("@Town", town);
+            command.Parameters.AddWithValue("@County", county);
+            command.Parameters.AddWithValue("@Country", country);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateLocation(int locationID, string town, string county, string country)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[UpdateLocation]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@LocationID", locationID);
+            command.Parameters.AddWithValue("@Town", town);
+            command.Parameters.AddWithValue("@County", county);
+            command.Parameters.AddWithValue("@Country", country);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteLocation(int locationID)
+        {
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+
+            using var command = new SqlCommand("[CW2].[DeleteLocation]", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@LocationID", locationID);
+
+            command.ExecuteNonQuery();
+        }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -196,6 +343,28 @@ namespace Comp2001CW2.Data
                 e.HasNoKey();
                 e.ToView("LimitedView", "CW2");
             });
+
+
+            modelBuilder.Entity<LocationsView>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("LocationsView", "CW2");
+            });
+
+            modelBuilder.Entity<LanguagesView>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("LanguagesView", "CW2");
+            });
+
+            modelBuilder.Entity<ActivitiesView>(e =>
+            {
+                e.HasNoKey();
+                e.ToView("ActivitiesView", "CW2");
+            });
+
+
+
         }
     }
 }
