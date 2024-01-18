@@ -64,15 +64,24 @@ namespace Comp2001CW2.Controllers
         [HttpDelete("DeleteLocation")]
         public IActionResult DeleteLocation(int locationID)
         {
-            try
+            int? adminRights = HttpContext.Session.GetInt32("AdminRights");
+
+            if (adminRights != 1)
             {
-                _dbContext.DeleteLocation(locationID);
-                _dbContext.SaveChanges();
-                return Ok("Location deleted successfully.");
+                return BadRequest("Administrative rights required to delete locations");
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                try
+                {
+                    _dbContext.DeleteLocation(locationID);
+                    _dbContext.SaveChanges();
+                    return Ok("Location deleted successfully.");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                }
             }
         }
 

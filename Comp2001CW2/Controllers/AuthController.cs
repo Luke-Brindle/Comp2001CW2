@@ -54,4 +54,15 @@ public class AuthController : ControllerBase
             return Unauthorized("Incorrect login details");
         }
     }
+
+
+    [HttpPost("LogOut")]
+    public async Task<IActionResult> LogOut()
+    {
+        HttpContext.Session.SetInt32("UserID", -1);
+        HttpContext.Session.SetInt32("AdminRights", -1);
+        return Ok("Logged Out");
+    }
+
+
 }

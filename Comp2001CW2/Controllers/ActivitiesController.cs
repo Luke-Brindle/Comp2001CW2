@@ -64,15 +64,24 @@ namespace Comp2001CW2.Controllers
         [HttpDelete("DeleteActivity")]
         public IActionResult DeleteActivity(int activityID)
         {
-            try
+            int? adminRights = HttpContext.Session.GetInt32("AdminRights");
+
+            if (adminRights != 1)
             {
-                _dbContext.DeleteActivity(activityID);
-                _dbContext.SaveChanges();
-                return Ok("Activity deleted successfully.");
+                return BadRequest("Administrative rights required to delete activities");
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                try
+                {
+                    _dbContext.DeleteActivity(activityID);
+                    _dbContext.SaveChanges();
+                    return Ok("Activity deleted successfully.");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                }
             }
         }
 
