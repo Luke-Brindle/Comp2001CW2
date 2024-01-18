@@ -23,6 +23,9 @@ Update Account - Logged in users are able to update their account information, s
 
 Update Preferences - Logged in users can change their Unit Preferences and Activity Time Preferences. When the user changes their unit preferences this activates a trigger that will convert the values in height and weight between metric and imperial accordingly.
 
+## Deployed Interface
+The application can be accessed at https://web.socem.plymouth.ac.uk/COMP2001/LBrindle/swagger/index.html
+
 ## Setup
 
 1) Clone the repository
