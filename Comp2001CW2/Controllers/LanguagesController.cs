@@ -31,30 +31,6 @@ namespace Comp2001CW2.Controllers
             }
         }
 
-        [HttpPost("CreateLanguage")]
-        public IActionResult CreateLanguage(string languageID, string languageName)
-        {
-            int? adminRights = HttpContext.Session.GetInt32("AdminRights");
-
-            if (adminRights != 1)
-            {
-                return BadRequest("Administrative rights required to create languages");
-            }
-            else
-            {
-                try
-                {
-                    _dbContext.CreateLanguage(languageID, languageName);
-                    _dbContext.SaveChanges();
-                    return Ok("Language created successfully.");
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
-                }
-            }
-        }
-
         [HttpPut("UpdateLanguage")]
         public IActionResult UpdateLanguage(string languageID, string languageName)
         {
@@ -67,30 +43,6 @@ namespace Comp2001CW2.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("DeleteLanguage")]
-        public IActionResult DeleteLanguage(string languageID)
-        {
-            int? adminRights = HttpContext.Session.GetInt32("AdminRights");
-
-            if (adminRights != 1)
-            {
-                return BadRequest("Administrative rights required to delete languages");
-            }
-            else
-            {
-                try
-                {
-                    _dbContext.DeleteLanguage(languageID);
-                    _dbContext.SaveChanges();
-                    return Ok("Language deleted successfully.");
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal Server Error: {ex.Message}");
-                }
             }
         }
 
