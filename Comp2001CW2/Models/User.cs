@@ -16,10 +16,10 @@ namespace Comp2001CW2.Models
         [ForeignKey("LanguageID")]
         public string LanguageID { get; set; }
         [ForeignKey("LocationID")]
-        public int LocationID { get; set; }
-        public string AboutMe { get; set; }
-        public double Height { get; set; }
-        public double Weight { get; set; }
+        public int? LocationID { get; set; }
+        public string? AboutMe { get; set; }
+        public double? Height { get; set; }
+        public double? Weight { get; set; }
         public bool UnitPref { get; set; }
         public bool TimePref { get; set; }
     }

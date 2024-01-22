@@ -33,6 +33,7 @@ public class AuthController : ControllerBase
         HttpResponseMessage apiResponse = await _httpClient.PostAsync(apiString, stringContent).ConfigureAwait(false);
 
         var user = _dbContext.Users.FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+
         string apiData = await apiResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         if (user != null)
@@ -40,13 +41,19 @@ public class AuthController : ControllerBase
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetInt32("AdminRights", user.AdminRights ? 1 : 0);
 
+            string email = user.Email;
+            string aboutMe = user.AboutMe ?? "No About Me";
+            string location = user.LocationID.HasValue ? user.LocationID.Value.ToString() : "0";
+            string weight = user.Weight.HasValue ? user.Weight.Value.ToString() : "0";
+            string height = user.Height.HasValue ? user.Height.Value.ToString() : "0";
+
             if (apiData.Contains("True"))
             {
-                return Ok("Login successful! Account Authenticated");
+                return Ok($"Login successful! Account Authenticated.");
             }
             else
             {
-                return Ok("Login successful! Account Unauthenticated");
+                return Ok($"Login successful! Account Unauthenticated.");
             }
         }
         else
